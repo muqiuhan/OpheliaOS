@@ -10,6 +10,8 @@
 
 </div>
 
+## Application and Basic Execution Environment
+
 After Qemu 7.0.0, we can directly submit the kernel executable file os to Qemu without any metadata clipping. In this case, our kernel can also run normally. The specific method is: 
 ```
 -device loader,file=path/to/os

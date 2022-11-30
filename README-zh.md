@@ -10,6 +10,8 @@
 
 </div>
 
+## 应用程序与基本执行环境
+
 在 Qemu 7.0.0 版本后，我们可以直接将内核可执行文件 os 提交给 Qemu 而不必进行任何元数据的裁剪工作，这种情况下我们的内核也能正常运行。其具体做法为：将 Qemu 的参数替换为 -device loader,file=path/to/os:
 ```
 -device loader,file=path/to/os
