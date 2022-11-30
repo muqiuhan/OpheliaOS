@@ -1,8 +1,12 @@
 #![no_std]
 #![no_main]
+#![feature(panic_info_message)]
 
 mod lang_item;
 mod sbi;
+
+#[macro_use]
+mod console;
 
 use core::arch::global_asm;
 
@@ -11,7 +15,15 @@ global_asm!(include_str!("entry.asm"));
 #[no_mangle]
 pub fn rust_main() -> ! {
     clear_bss();
-    loop {}
+    if main() != 0 {
+        panic!("Kernel panicked!")
+    }
+    panic!("Shutdown machine!")
+}
+
+fn main() -> i32 {
+    println!("OpheliaOS v0.0.1");
+    0
 }
 
 /// Before using any global variables assigned to the .bss section
