@@ -1,15 +1,3 @@
-<div align="center">
-
-<img>
-
-# OpheliaOS
-
-> 一个根据rCore教程使用Rust编写的riscv内核
-
-[英文](./README.md)
-
-</div>
-
 ## 应用程序与基本执行环境
 
 在 Qemu 7.0.0 版本后，我们可以直接将内核可执行文件 os 提交给 Qemu 而不必进行任何元数据的裁剪工作，这种情况下我们的内核也能正常运行。其具体做法为：将 Qemu 的参数替换为 -device loader,file=path/to/os:
@@ -19,7 +7,7 @@
 
 使用如下命令可以丢弃内核可执行文件中的元数据得到内核镜像：
 ```
-rust-objcopy --strip-all target/riscv64gc-unknown-none-elf/release/ophelia_os -O binary target/riscv64gc-unknown-none-elf/release/ophelia_os.bin
+rust-objcopy --strip-all target/riscv64gc-unknown-none-elf/release/os -O binary target/riscv64gc-unknown-none-elf/release/os.bin
 ```
 
 使用qemu运行:
@@ -28,7 +16,7 @@ qemu-system-riscv64 \
     -machine virt \
     -nographic \
     -bios ./bootloader/rustsbi-qemu.bin \
-    -device loader,file=./ophelia_os/target/riscv64gc-unknown-none-elf/release/ophelia_os.bin,addr=0x80200000
+    -device loader,file=target/riscv64gc-unknown-none-elf/release/os.bin,addr=0x80200000
 ```
 
 基于 GDB 验证启动需要通过以下命令启动 Qemu 并加载 RustSBI 和内核镜像：
@@ -37,7 +25,7 @@ qemu-system-riscv64 \
     -machine virt \
     -nographic \
     -bios ./bootloader/rustsbi-qemu.bin \
-    -device loader,file=./ophelia_os/target/riscv64gc-unknown-none-elf/release/ophelia_os.bin,addr=0x80200000 \
+    -device loader,file=target/riscv64gc-unknown-none-elf/release/os.bin,addr=0x80200000 \
 	-s -S
 ```
 
@@ -46,14 +34,14 @@ qemu-system-riscv64 \
 打开另一个终端，启动一个 GDB 客户端连接到 Qemu ：
 ```
 riscv64-unknown-elf-gdb \
-    -ex 'file ./ophelia_os/target/riscv64gc-unknown-none-elf/release/ophelia_os' \
+    -ex 'file target/riscv64gc-unknown-none-elf/release/os' \
     -ex 'set arch riscv:rv64' \
     -ex 'target remote localhost:1234'
 ```
 
 如果成功可以看到:
 ```
-Reading symbols from ./ophelia_os/target/riscv64gc-unknown-none-elf/release/ophelia_os...
+Reading symbols from target/riscv64gc-unknown-none-elf/release/os...
 The target architecture is set to "riscv:rv64".
 Remote debugging using localhost:1234
 0x0000000000001000 in ?? ()
@@ -116,6 +104,3 @@ $3 = 100
 $4 = 0x0
 ```
 这里`ra`是寄存器`x1`的别名，`p/d $x1`可以以十进制打印寄存器`x1`的值，它的结果正确。
-
-# 开源协议
-[MIT](./LICENSE) @ 韩暮秋

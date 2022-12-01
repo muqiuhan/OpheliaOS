@@ -1,14 +1,4 @@
-<div align="center">
-
-<img>
-
-# OpheliaOS
-
-> A riscv kernel written in Rust according to the rCore tutorial
-
-[简体中文](./README-zh.md)
-
-</div>
+__build with `cargo build --release`__
 
 ## Application and Basic Execution Environment
 
@@ -19,7 +9,7 @@ After Qemu 7.0.0, we can directly submit the kernel executable file os to Qemu w
 
 Use the following command to discard the metadata in the kernel executable file to get the kernel image:
 ```
-rust-objcopy --strip-all target/riscv64gc-unknown-none-elf/release/ophelia_os -O binary target/riscv64gc-unknown-none-elf/release/ophelia_os.bin
+rust-objcopy --strip-all target/riscv64gc-unknown-none-elf/release/os -O binary target/riscv64gc-unknown-none-elf/release/os.bin
 ```
 
 Run with:
@@ -27,8 +17,8 @@ Run with:
 qemu-system-riscv64 \
     -machine virt \
     -nographic \
-    -bios ./bootloader/rustsbi-qemu.bin \
-    -device loader,file=./ophelia_os/target/riscv64gc-unknown-none-elf/release/ophelia_os.bin,addr=0x80200000
+    -bios ../bootloader/rustsbi-qemu.bin \
+    -device loader,file=target/riscv64gc-unknown-none-elf/release/os.bin,addr=0x80200000
 ```
 
 Start Qemu and load RustSBI and the kernel image with the following command:
@@ -36,8 +26,8 @@ Start Qemu and load RustSBI and the kernel image with the following command:
 qemu-system-riscv64 \
     -machine virt \
     -nographic \
-    -bios ./bootloader/rustsbi-qemu.bin \
-    -device loader,file=./ophelia_os/target/riscv64gc-unknown-none-elf/release/ophelia_os.bin,addr=0x80200000 \
+    -bios ../bootloader/rustsbi-qemu.bin \
+    -device loader,file=target/riscv64gc-unknown-none-elf/release/os.bin,addr=0x80200000 \
 	-s -S
 ```
 
@@ -48,8 +38,8 @@ Start a GDB client connected to Qemu:
 qemu-system-riscv64 \
     -machine virt \
     -nographic \
-    -bios ./bootloader/rustsbi-qemu.bin \
-    -device loader,file=./ophelia_os/target/riscv64gc-unknown-none-elf/release/ophelia_os.bin,addr=0x80200000 \
+    -bios ../bootloader/rustsbi-qemu.bin \
+    -device loader,file=target/riscv64gc-unknown-none-elf/release/os.bin,addr=0x80200000 \
 	-s -S
 ```
 
@@ -58,14 +48,14 @@ qemu-system-riscv64 \
 Open another terminal and start a GDB client to connect to Qemu:
 ```
 riscv64-unknown-elf-gdb \
-    -ex 'file ./ophelia_os/target/riscv64gc-unknown-none-elf/release/ophelia_os' \
+    -ex 'file target/riscv64gc-unknown-none-elf/release/os' \
     -ex 'set arch riscv:rv64' \
     -ex 'target remote localhost:1234'
 ```
 
 If successful you can see:
 ```
-Reading symbols from ./ophelia_os/target/riscv64gc-unknown-none-elf/release/ophelia_os...
+Reading symbols from target/riscv64gc-unknown-none-elf/release/os...
 The target architecture is set to "riscv:rv64".
 Remote debugging using localhost:1234
 0x0000000000001000 in ?? ()
@@ -130,6 +120,3 @@ $4 = 0x0
 ```
 
 Here `ra` is an alias for the register `x1`, `p/d $x1` can print the value of the register `x1` in decimal, and its result is correct.
-
-# License
-[MIT](./LICENSE) @ Muqiu Han
