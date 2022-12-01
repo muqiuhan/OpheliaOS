@@ -15,7 +15,4 @@ elf:
 	@echo $(ELFS)
 	@echo $(BINS)
 
-binary: elf
-	$(foreach elf, $(ELFS), $(OBJCOPY) $(elf) --strip-all -O binary $(patsubst $(TARGET_DIR)/%, $(TARGET_DIR)/%.bin, $(elf));)
-
-build: binary
+build: elf

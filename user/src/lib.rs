@@ -33,12 +33,12 @@ fn clear_bss() {
     // Try to find the global symbols sbss and ebss from elsewhere,
     // which are given by the linker script linker.ld:
     extern "C" {
-        fn sbss();
-        fn ebss();
+        fn start_bss();
+        fn end_bss();
     }
 
     // Traversing the address range and clearing byte by byte:
-    (sbss as usize..ebss as usize).for_each(|a| unsafe { (a as *mut u8).write_volatile(0) })
+    (start_bss as usize..end_bss as usize).for_each(|a| unsafe { (a as *mut u8).write_volatile(0) })
 }
 
 pub fn write(fd: usize, buf: &[u8]) -> isize {
