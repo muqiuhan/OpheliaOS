@@ -2,11 +2,12 @@
 #![no_main]
 #![feature(panic_info_message)]
 
-mod lang_item;
-mod sbi;
-
 #[macro_use]
 mod console;
+mod batch;
+mod lang_item;
+mod sbi;
+mod sync;
 
 use core::arch::global_asm;
 

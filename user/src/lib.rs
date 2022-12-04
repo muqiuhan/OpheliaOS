@@ -5,8 +5,8 @@
 #[macro_use]
 pub mod console;
 mod lang_item;
-mod syscall;
 mod sbi;
+mod syscall;
 
 #[no_mangle]
 #[link_section = ".text.entry"]
