@@ -1,6 +1,6 @@
 use core::arch::asm;
 
-use crate::sync::UPSafeCell::UPSafeCell;
+use crate::sync::upsafe_cell::UPSafeCell;
 use lazy_static::lazy_static;
 
 const USER_STACK_SIZE: usize = 4096 * 2;
@@ -15,6 +15,16 @@ struct AppManager {
     num_app: usize,
     current_app: usize,
     app_start: [usize; MAX_APP_NUM + 1],
+}
+
+#[repr(align(4096))]
+struct KernelStack {
+    data: [u8; KERNEL_STACK_SIZE],
+}
+
+#[repr(align(4096))]
+struct UserStack {
+    data: [u8; USER_STACK_SIZE],
 }
 
 impl AppManager {
@@ -57,6 +67,22 @@ impl AppManager {
     }
 }
 
+impl UserStack {
+    /// Get the address of the top of the stack.
+    /// Since the stack grows downward in RISC-V, we only need to return the end address of the wrapped array.
+    fn get_sp(&self) -> usize {
+        self.data.as_ptr() as usize + USER_STACK_SIZE
+    }
+}
+
+impl KernelStack {
+    /// Get the address of the top of the stack.
+    /// Since the stack grows downward in RISC-V, we only need to return the end address of the wrapped array.
+    fn get_sp(&self) -> usize {
+        self.data.as_ptr() as usize + USER_STACK_SIZE
+    }
+}
+
 lazy_static! {
     static ref APP_MANAGER: UPSafeCell<AppManager> = unsafe {
         UPSafeCell::new({
@@ -77,3 +103,11 @@ lazy_static! {
         })
     };
 }
+
+static KERNEL_STACK: KernelStack = KernelStack {
+    data: [0; KERNEL_STACK_SIZE],
+};
+
+static USER_STACK: UserStack = UserStack {
+    data: [0; KERNEL_STACK_SIZE],
+};

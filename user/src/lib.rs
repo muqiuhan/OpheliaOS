@@ -5,7 +5,6 @@
 #[macro_use]
 pub mod console;
 mod lang_item;
-mod sbi;
 mod syscall;
 
 #[no_mangle]

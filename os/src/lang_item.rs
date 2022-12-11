@@ -1,5 +1,4 @@
 use crate::println;
-use crate::sbi::shutdown;
 use core::panic::PanicInfo;
 
 #[panic_handler]
@@ -15,5 +14,7 @@ fn panic(info: &PanicInfo) -> ! {
         println!("Panicked: {}", info.message().unwrap());
     }
 
-    shutdown()
+    sbi_rt::system_reset(sbi_rt::Shutdown, sbi_rt::NoReason);
+
+    loop {}
 }
