@@ -7,22 +7,37 @@ mod console;
 mod batch;
 mod lang_item;
 mod sync;
+mod trap;
+mod syscall;
 
 use core::arch::global_asm;
 
 global_asm!(include_str!("entry.asm"));
+global_asm!(include_str!("link_app.S"));
 
 #[no_mangle]
 pub fn rust_main() -> ! {
-    clear_bss();
-    if main() != 0 {
-        panic!("Kernel panicked!")
+    println!("[KERNEL] initializting...");
+    
+    if init() != 0 {
+        panic!("[KERNEL] initializtion failed!!!")
     }
-    panic!("Shutdown machine!")
+
+    println!("[KERNEL] start running application...");
+    batch::run_next_app();
 }
 
-fn main() -> i32 {
-    println!("OpheliaOS v0.0.1");
+/// init kernel
+fn init() -> i32 {
+    println!("[KERNEL] initializing bss...");
+    clear_bss();
+
+    println!("[KERNEL] initializting trap...");
+    trap::init();
+
+    println!("[KERNEL] initializing batch...");
+    batch::init();
+    
     0
 }
 

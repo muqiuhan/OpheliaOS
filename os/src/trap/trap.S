@@ -1,3 +1,6 @@
+# Save the Trap context on the kernel stack through __alltraps,
+# and then jump to the trap_handler function written in Rust to complete Trap disctibution and processing.
+
 .altmacro
 .macro SAVE_GP n
     sd x\n, \n*8(sp)
