@@ -31,7 +31,7 @@ pub fn trap_handler(cx: &mut context::TrapContext) -> &mut context::TrapContext 
         }
 
         Trap::Exception(Exception::StoreFault) | Trap::Exception(Exception::StorePageFault) => {
-            println!("[KERNEL]: Page fault in application, kernel kill it!!!");
+            error!("Page fault in application, kernel kill it!!!");
             run_next_app();
         }
 
