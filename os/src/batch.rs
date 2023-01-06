@@ -91,10 +91,10 @@ impl KernelStack {
 
 impl AppManager {
     pub fn print_app_info(&self) {
-        println!("[kernel] num_app = {}", self.num_app);
+        info!("num_app = {}", self.num_app);
         for i in 0..self.num_app {
-            println!(
-                "[kernel] app_{} [{:#x}, {:#x})",
+            info!(
+                "app_{} [{:#x}, {:#x})",
                 i,
                 self.app_start[i],
                 self.app_start[i + 1]
@@ -108,7 +108,7 @@ impl AppManager {
             panic!("All applications completed!");
         }
 
-        println!("[kernel] Loading app_{}", app_id);
+        info!("Loading app_{}", app_id);
 
         // Normally, the CPU will think that the code segment of the program will not change, so `i-cache` is a read-only cache.
         // But here, the OS will modify the memory area that will be fetched by the CPU, which will make the `i-cache` contain inconsistent content with the memory.

@@ -10,10 +10,6 @@ mod stack_trace;
 mod sync;
 mod syscall;
 mod trap;
-mod ophelia_log;
-
-#[macro_use]
-extern crate log;
 
 use core::arch::global_asm;
 
@@ -23,8 +19,7 @@ global_asm!(include_str!("link_app.S"));
 #[no_mangle]
 pub fn rust_main() -> ! {
     info!("Initializing Kernel");
-
-    debug!("Clear bss");
+    info!("Clear bss");
     clear_bss();
 
     if init() != 0 {
@@ -36,10 +31,10 @@ pub fn rust_main() -> ! {
 }
 
 fn init() -> i32 {
-    debug!("Initializing Trap");
+    info!("Initializing Trap");
     trap::init();
 
-    debug!("Initializing Batch");
+    info!("Initializing Batch");
     batch::init();
 
     0
