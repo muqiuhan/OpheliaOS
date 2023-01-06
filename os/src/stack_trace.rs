@@ -6,12 +6,12 @@ pub unsafe fn print() -> () {
 
     println!("[KERNEL]: == begin stack trace ==");
     while fp != ptr::null() {
-	let saved_ra = *fp.sub(1);
-	let saved_fp = *fp.sub(2);
+        let saved_ra = *fp.sub(1);
+        let saved_fp = *fp.sub(2);
 
-	println!("0x{:016x}, fp = 0x{:016x}", saved_ra, saved_fp);
+        println!("0x{:016x}, fp = 0x{:016x}", saved_ra, saved_fp);
 
-	fp = saved_fp as *const usize;
+        fp = saved_fp as *const usize;
     }
     println!("[KERNEL]: == end stack trace ==");
 
