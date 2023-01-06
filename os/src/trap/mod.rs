@@ -25,19 +25,23 @@ pub fn trap_handler(cx: &mut context::TrapContext) -> &mut context::TrapContext 
     let stval = stval::read();
 
     match scause.cause() {
-	Trap::Exception(Exception::UserEnvCall) => {
-	    cx.sepc += 4;
-	    cx.x[10] = syscall(cx.x[17], [cx.x[10], cx.x[11], cx.x[12]]) as usize;
-	}
+        Trap::Exception(Exception::UserEnvCall) => {
+            cx.sepc += 4;
+            cx.x[10] = syscall(cx.x[17], [cx.x[10], cx.x[11], cx.x[12]]) as usize;
+        }
 
-	Trap::Exception(Exception::StoreFault) | Trap::Exception(Exception::StorePageFault) => {
-	    println!("[KERNEL]: Page fault in application, kernel kill it!!!");
-	    run_next_app();
-	}
+        Trap::Exception(Exception::StoreFault) | Trap::Exception(Exception::StorePageFault) => {
+            println!("[KERNEL]: Page fault in application, kernel kill it!!!");
+            run_next_app();
+        }
 
-	_ => {
-	    panic!("Unsupported trap {:?}, stval = {:#x}!", scause.cause(), stval);
-	}
+        _ => {
+            panic!(
+                "Unsupported trap {:?}, stval = {:#x}!",
+                scause.cause(),
+                stval
+            );
+        }
     }
 
     cx

@@ -76,8 +76,12 @@ impl KernelStack {
 
     /// The return value of this function is the top of the stack after the kernel stack is pushed into the Trap context,
     /// which will be used as the parameter of __restore
-    pub fn push_context(&self, cx: trap::context::TrapContext) -> &'static mut trap::context::TrapContext {
-        let cx_ptr = (self.get_sp() - core::mem::size_of::<trap::context::TrapContext>()) as *mut trap::context::TrapContext;
+    pub fn push_context(
+        &self,
+        cx: trap::context::TrapContext,
+    ) -> &'static mut trap::context::TrapContext {
+        let cx_ptr = (self.get_sp() - core::mem::size_of::<trap::context::TrapContext>())
+            as *mut trap::context::TrapContext;
         unsafe {
             *cx_ptr = cx;
         }
@@ -86,7 +90,6 @@ impl KernelStack {
 }
 
 impl AppManager {
-    
     pub fn print_app_info(&self) {
         println!("[kernel] num_app = {}", self.num_app);
         for i in 0..self.num_app {
@@ -151,10 +154,12 @@ pub fn run_next_app() -> ! {
     }
 
     unsafe {
-        __restore(KERNEL_STACK.push_context(trap::context::TrapContext::app_init_context(
-            APP_BASE_ADDRESS,
-            USER_STACK.get_sp(),
-        )) as *const _ as usize);
+        __restore(
+            KERNEL_STACK.push_context(trap::context::TrapContext::app_init_context(
+                APP_BASE_ADDRESS,
+                USER_STACK.get_sp(),
+            )) as *const _ as usize,
+        );
     }
 
     panic!("Unreachable in batch::run_current_app!");

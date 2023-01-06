@@ -7,8 +7,9 @@ mod console;
 mod batch;
 mod lang_item;
 mod sync;
-mod trap;
 mod syscall;
+mod trap;
+mod stack_trace;
 
 use core::arch::global_asm;
 
@@ -17,27 +18,27 @@ global_asm!(include_str!("link_app.S"));
 
 #[no_mangle]
 pub fn rust_main() -> ! {
-    println!("[KERNEL] initializting...");
-    
+    println!("[KERNEL]: initializting...");
+
     if init() != 0 {
-        panic!("[KERNEL] initializtion failed!!!")
+        panic!("[KERNEL]: initializtion failed!!!")
     }
 
-    println!("[KERNEL] start running application...");
+    println!("[KERNEL]: start running application...");
     batch::run_next_app();
 }
 
 /// init kernel
 fn init() -> i32 {
-    println!("[KERNEL] initializing bss...");
+    println!("[KERNEL]: initializing bss...");
     clear_bss();
 
-    println!("[KERNEL] initializting trap...");
+    println!("[KERNEL]: initializting trap...");
     trap::init();
 
-    println!("[KERNEL] initializing batch...");
+    println!("[KERNEL]: initializing batch...");
     batch::init();
-    
+
     0
 }
 
