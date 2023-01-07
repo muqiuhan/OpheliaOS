@@ -35,6 +35,11 @@ pub fn trap_handler(cx: &mut context::TrapContext) -> &mut context::TrapContext 
             run_next_app();
         }
 
+	Trap::Exception(Exception::IllegalInstruction) => {
+            error!("IllegalInstruction in application, kernel killed it.");
+            run_next_app();
+	}
+
         _ => {
             panic!(
                 "Unsupported trap {:?}, stval = {:#x}!",
