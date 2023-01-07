@@ -3,14 +3,13 @@
 #![feature(panic_info_message)]
 
 #[macro_use]
-mod console;
+extern crate logger;
+extern crate stacktrace;
 
 #[macro_use]
-mod logger;
-
+mod console;
 mod batch;
 mod lang_item;
-mod stack_trace;
 mod sync;
 mod syscall;
 mod trap;

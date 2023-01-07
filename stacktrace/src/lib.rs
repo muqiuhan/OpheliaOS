@@ -1,3 +1,8 @@
+#![no_std]
+
+#[macro_use]
+extern crate logger;
+
 use core::{arch::asm, ptr};
 
 pub unsafe fn print() -> () {
