@@ -105,7 +105,8 @@ impl AppManager {
     /// Load the binary image of the application corresponding to the parameter `app_id` to the location starting at `0x80400000` in physical memory.
     unsafe fn load_app(&self, app_id: usize) {
         if app_id >= self.num_app {
-            panic!("All applications completed!");
+            info!("All applications completed!");
+	    sbi_rt::system_reset(sbi_rt::Shutdown, sbi_rt::NoReason);
         }
 
         info!("Loading app_{}", app_id);
