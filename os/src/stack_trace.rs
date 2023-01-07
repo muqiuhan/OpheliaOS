@@ -4,16 +4,16 @@ pub unsafe fn print() -> () {
     let mut fp: *const usize;
     asm!("mv {}, fp", out(reg) fp);
 
-    info!("== begin stack trace ==");
+    info!("+------------ BEGIN STACK TRACE ------------+");
     while fp != ptr::null() {
         let saved_ra = *fp.sub(1);
         let saved_fp = *fp.sub(2);
 
-        trace!("0x{:016x}, fp = 0x{:016x}", saved_ra, saved_fp);
+        trace!(" 0x{:016x}, fp = 0x{:016x}", saved_ra, saved_fp);
 
         fp = saved_fp as *const usize;
     }
-    info!("== end stack trace ==");
+    info!("+------------  END STACK TRACE  ------------+");
 
     ()
 }

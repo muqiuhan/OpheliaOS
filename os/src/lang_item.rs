@@ -1,4 +1,3 @@
-use crate::println;
 use crate::stack_trace;
 use core::panic::PanicInfo;
 

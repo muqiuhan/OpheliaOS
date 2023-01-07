@@ -18,23 +18,23 @@ global_asm!(include_str!("link_app.S"));
 
 #[no_mangle]
 pub fn rust_main() -> ! {
-    info!("Initializing Kernel");
-    info!("Clear bss");
+    info!("Initializing kernel...");
+    info!("Clear bss...");
     clear_bss();
 
     if init() != 0 {
-        panic!("[kernel]: Initialized Failure!!!")
+        panic!("Initialized Failure!!!")
     }
 
-    println!("[kernel]: start running application...");
+    info!("Start running application...");
     batch::run_next_app();
 }
 
 fn init() -> i32 {
-    info!("Initializing Trap");
+    info!("Initializing trap...");
     trap::init();
 
-    info!("Initializing Batch");
+    info!("Initializing batch...");
     batch::init();
 
     0
