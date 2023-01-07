@@ -1,11 +1,11 @@
-const SYSCALL_WRITE: usize = 64;
-const SYSCALL_EXIT: usize = 93;
-
 mod fs;
 mod process;
 
 use fs::*;
 use process::*;
+
+const SYSCALL_WRITE: usize = 64;
+const SYSCALL_EXIT: usize = 93;
 
 /// handle syscall exception with `syscall_id` and other arguments
 /// distribute to specific processing functions according to `syscall_id`

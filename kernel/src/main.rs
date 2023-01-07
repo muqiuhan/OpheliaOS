@@ -4,6 +4,10 @@
 
 #[macro_use]
 mod console;
+
+#[macro_use]
+mod logger;
+
 mod batch;
 mod lang_item;
 mod stack_trace;
