@@ -3,10 +3,13 @@
 #![feature(panic_info_message)]
 
 #[macro_use]
+extern crate logger;
+extern crate stacktrace;
+
+#[macro_use]
 mod console;
 mod batch;
 mod lang_item;
-mod stack_trace;
 mod sync;
 mod syscall;
 mod trap;
@@ -18,23 +21,22 @@ global_asm!(include_str!("link_app.S"));
 
 #[no_mangle]
 pub fn rust_main() -> ! {
-    info!("Initializing Kernel");
-    info!("Clear bss");
-    clear_bss();
-
+    info!("Initializing kernel...");
     if init() != 0 {
-        panic!("[kernel]: Initialized Failure!!!")
+        panic!("Initialized Failure!!!")
     }
-
-    println!("[kernel]: start running application...");
+    info!("Start running application...");
     batch::run_next_app();
 }
 
 fn init() -> i32 {
-    info!("Initializing Trap");
+    info!("Clear bss...");
+    clear_bss();
+    
+    info!("Initializing trap...");
     trap::init();
 
-    info!("Initializing Batch");
+    info!("Initializing batch...");
     batch::init();
 
     0

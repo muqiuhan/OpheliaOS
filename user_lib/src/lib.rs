@@ -7,6 +7,9 @@ pub mod console;
 mod lang_item;
 mod syscall;
 
+#[macro_use]
+extern crate logger;
+
 #[no_mangle]
 #[link_section = ".text.entry"]
 pub extern "C" fn _start() -> ! {

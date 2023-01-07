@@ -54,6 +54,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "logger"
+version = "0.0.2"
+dependencies = [
+ "log",
+ "sbi-rt",
+]
+
+[[package]]
 name = "memchr"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -150,6 +158,6 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 name = "user_lib"
 version = "0.1.0"
 dependencies = [
+ "logger",
  "riscv",
- "sbi-rt",
 ]

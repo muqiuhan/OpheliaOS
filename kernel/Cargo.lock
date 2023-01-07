@@ -39,6 +39,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "kernel"
+version = "0.0.1"
+dependencies = [
+ "lazy_static",
+ "logger",
+ "riscv",
+ "sbi-rt",
+ "stacktrace",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -57,19 +68,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "logger"
+version = "0.0.2"
+dependencies = [
+ "log",
+ "sbi-rt",
+]
+
+[[package]]
 name = "memchr"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
-
-[[package]]
-name = "os"
-version = "0.1.0"
-dependencies = [
- "lazy_static",
- "riscv",
- "sbi-rt",
-]
 
 [[package]]
 name = "regex"
@@ -157,6 +167,13 @@ name = "spin"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6e63cff320ae2c57904679ba7cb63280a3dc4613885beafb148ee7bf9aa9042d"
+
+[[package]]
+name = "stacktrace"
+version = "0.1.0"
+dependencies = [
+ "logger",
+]
 
 [[package]]
 name = "static_assertions"
