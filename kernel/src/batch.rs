@@ -57,7 +57,7 @@ static KERNEL_STACK: KernelStack = KernelStack {
 };
 
 static USER_STACK: UserStack = UserStack {
-    data: [0; KERNEL_STACK_SIZE],
+    data: [0; USER_STACK_SIZE],
 };
 
 impl UserStack {
