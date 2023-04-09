@@ -38,7 +38,7 @@ fn clear_bss() {
         fn start_bss();
         fn end_bss();
     }
-
+    
     // Traversing the address range and clearing byte by byte:
     (start_bss as usize..end_bss as usize).for_each(|a| unsafe { (a as *mut u8).write_volatile(0) })
 }

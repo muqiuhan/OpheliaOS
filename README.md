@@ -7,14 +7,9 @@
 </div>
 
 ## Build and Run
-> OpheliaOS is developed using Rust and currently runs under qemu.
+> `cd kernel` then `make build` or `make run`
 
-### Dependencies
-
-#### Environment
-
-- For Rust, OpheliaOS must be built under the nightly version of rust, the current version is `rustc 1.67.0-nightly (2585bcea0 2022-11-28)`
-- For Qemu, OpheliaOS runs on `qemu-system-riscv64` version 7.0 and above, the current version is `QEMU emulator version 7.1.0`
+OpheliaOS is developed using Rust and currently runs under [qemu-riscv64 version 7.1.0](https://github.com/muqiuhan/qemu-7.1.0-riscv64).
 
 #### Rust Toolchain
 - Requires cross compilation with riscv64gc-unknown-none-elf: `rustup target add riscv64gc-unknown-none-elf`
@@ -25,35 +20,23 @@
 
 ### Structure
 ```
-├── bootloader
-├── os
-│   ├── Cargo.toml
-│   ├── Makefile
-│   ├── README.md
-│   ├── src
-└── user
-    ├── Cargo.toml
-    ├── Makefile
-    ├── src
+├── bootloader: Executable file of rustsbi
+├── kernel: The core of OpheliaOS
+├── user_lib: Batch processing system of OpheliaOS
+├── stacktrace: Stacktrace library
+└── logger: Logging library
 ```
 
-`bootloader`: Executable file of rustsbi \
-`os`: The core of OpheliaOS \
-`user`: Batch processing system of OpheliaOS
+## FAQ
+- /bin/sh: line 1: rust-objcopy: command not found
+    > This may be caused by not adding the .cargo/bin directory to the environment variable.
 
-### Build
-As you can see, the source code of OpheliaOS is scattered in different modules, but there is a `Makefile` under each module, which means that each module of OpheliaOS can be built separately by executing `make` in the corresponding directory.
-
-The `os` directory is a special directory, which is the complete core of OpheliaOS, so executing `make` in the os directory will get a completed OpheliaOS core.
-
-### Run
-OpheliaOS currently runs on qemu and can be run by executing `make run` in the `os` directory.
-
-# Comminicate
+## Comminicate
 The operating system is a very large and profound field. Rust is an interesting and modern language. There will be many difficulties in the development of this project. This is a lonely road, so we created a group for discuss:
 - Telegram : https://t.me/xfi_cn
+- QQ Group : 780653172
 
-# Acknowledgements
+## Acknowledgements
 - Thanks to the [rCore-OS community](http://rcore-os.cn/) for their detailed and friendly [tutorials](http://rcore-os.cn/rCore-Tutorial-Book-v3/) that helped me with this project
 
 # License

@@ -12,7 +12,6 @@ impl Write for Stdout {
     }
 }
 
-
 pub fn print(args: fmt::Arguments) {
     Stdout.write_fmt(args).unwrap();
 }
