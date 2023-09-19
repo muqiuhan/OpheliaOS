@@ -1,2 +1,8 @@
 target/
 /.idea
+
+# Added by cargo
+
+/target
+
+ophelia_os.bin
