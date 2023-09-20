@@ -6,3 +6,5 @@ target/
 /target
 
 ophelia_os.bin
+\#*
+.*
