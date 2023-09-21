@@ -11,7 +11,7 @@ run: build
 			-nographic -bios $(BOOTLOADER) \
 			-device loader,file=$(BIN),addr=0x80200000
 
-run.debug:
+run.debug: build
     @echo -e "NOTE: Press C-a x to exit QEMU\n"
 	@qemu-system-riscv64 -machine virt \
 			-nographic -bios $(BOOTLOADER) \

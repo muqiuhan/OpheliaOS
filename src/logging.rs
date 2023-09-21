@@ -1,34 +1,41 @@
-#[macro_export]
-macro_rules! info {
-    ($fmt: literal $(, $($arg: tt)+)?) => {
-        println!(format_args!(concat!("\x1b[32m", "[KERNEL] [INFO   ]: ", $fmt, "\x1b[0m\n") $(, $($arg)+)?));
+use log::{self, Level, LevelFilter, Log, Metadata, Record};
+
+struct KernelLogger;
+
+impl Log for KernelLogger {
+    fn enabled(&self, _metadata: &Metadata) -> bool {
+        true
     }
+    fn log(&self, record: &Record) {
+        if !self.enabled(record.metadata()) {
+            return;
+        }
+        let color = match record.level() {
+            Level::Error => 31, // Red
+            Level::Warn => 93,  // BrightYellow
+            Level::Info => 32,  // Gree
+            Level::Debug => 34, // Blud
+            Level::Trace => 90, // BrightBlack
+        };
+        println!(
+            "\u{1B}[{}m[{:>5}] {}\u{1B}[0m",
+            color,
+            record.level(),
+            record.args(),
+        );
+    }
+    fn flush(&self) {}
 }
 
-#[macro_export]
-macro_rules! debug {
-    ($fmt: literal $(, $($arg: tt)+)?) => {
-        println!(format_args!(concat!("\x1b[34m", "[KERNEL] [DEBUG  ]: ", $fmt, "\x1b[0m\n") $(, $($arg)+)?));
-    }
-}
-
-#[macro_export]
-macro_rules! warning {
-    ($fmt: literal $(, $($arg: tt)+)?) => {
-        println!(format_args!(concat!("\x1b[93m". "[KERNEL] [WARNING]: ", $fmt, "\x1b[0m\n") $(, $($arg)+)?));
-    }
-}
-
-#[macro_export]
-macro_rules! trace {
-    ($fmt: literal $(, $($arg: tt)+)?) => {
-        println!(format_args!(concat!("\x1b[90m", "[KERNEL] [TRACE  ]: ", $fmt, "\x1b[0m\n") $(, $($arg)+)?));
-    }
-}
-
-#[macro_export]
-macro_rules! error {
-    ($fmt: literal $(, $($arg: tt)+)?) => {
-        println!(format_args!(concat!("\x1b[31m", "[KERNEL] [ERROR  ]: ", $fmt, "\x1b[0m\n") $(, $($arg)+)?));
-    }
+pub fn init() {
+    static LOGGER: KernelLogger = KernelLogger;
+    log::set_logger(&LOGGER).unwrap();
+    log::set_max_level(match option_env!("LOG") {
+        Some("ERROR") => LevelFilter::Error,
+        Some("WARN") => LevelFilter::Warn,
+        Some("INFO") => LevelFilter::Info,
+        Some("DEBUG") => LevelFilter::Debug,
+        Some("TRACE") => LevelFilter::Trace,
+        _ => LevelFilter::Info,
+    });
 }
