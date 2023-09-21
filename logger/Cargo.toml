@@ -1,9 +1,0 @@
-[package]
-name = "logger"
-version = "0.0.2"
-authors = ["Muqiu Han <muqiu-han@outlook.com>"]
-edition = "2021"
-
-[dependencies]
-log = { version = "^0.4", default-features = false }
-sbi-rt = { version = "0.0.2", features = ["legacy"] }
